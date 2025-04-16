@@ -26,6 +26,9 @@ class Camera:
     def center_to(self, x, y):
         self.x = x - self.screen_width // 2
         self.y = y - self.screen_height // 2
+
+    def center_to_object(self, obj):
+        self.center_to(obj.x + obj.width // 2, obj.y + obj.height // 2)
     
     def move(self, x, y):
         self.x += x

@@ -25,9 +25,9 @@ class Game:
             camera.rumble(20, 5)
         for obj in self.objects.values(): obj.update()
         if pyxel.btn(pyxel.KEY_SPACE):
-            camera.center_to(self.objects["BouncingBall"].x+self.objects["BouncingBall"].width/2, self.objects["BouncingBall"].y+self.objects["BouncingBall"].height/2)
+            camera.center_to_object(self.objects["BouncingBall"])
         if pyxel.btn(pyxel.KEY_R):
-            camera.center_to(self.objects["GravityBall"].x+self.objects["GravityBall"].width/2, self.objects["GravityBall"].y+self.objects["GravityBall"].height/2)
+            camera.center_to_object(self.objects["GravityBall"])
         camera.update()
         print(camera.get_position())
 
