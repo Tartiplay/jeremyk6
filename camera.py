@@ -2,7 +2,13 @@ import pyxel
 
 class Camera:
 
-    def __init__(self, x, y, viewport=[240, 160], limits=[0, 0, 480, 320]):
+    def __init__(self):
+        # Effects variables
+        self.rumble_force = 0
+        self.rumble_reduction = 0
+        self.fx_duration = 0
+
+    def init(self, x, y, viewport=[240, 160], limits=[0, 0, 480, 320]):
         self.x, self.y = None, None
         self.screen_width, self.screen_height = viewport
         self.set_position(x, y)
@@ -10,11 +16,6 @@ class Camera:
 
         # Limits
         self.min_x, self.min_y, self.max_x, self.max_y = limits
-
-        # Effects variables
-        self.rumble_force = 0
-        self.rumble_reduction = 0
-        self.fx_duration = 0
 
     def set_position(self, x, y):
         self.x, self.y = x, y
@@ -56,3 +57,4 @@ class Camera:
             else:
                 self.state = None
         
+camera = Camera()
