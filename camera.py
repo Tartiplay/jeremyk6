@@ -35,10 +35,17 @@ class Camera:
         self.y += y
     
     def rumble(self, duration=30, force=5):
-        self.state = "rumble"
         self.fx_duration = duration
         self.rumble_force = force
         self.rumble_reduction = force / duration
+
+    def rumble_v(self, duration=30, force=5):
+        self.state = "rumble_v"
+        self.rumble(duration, force)
+
+    def rumble_h(self, duration=30, force=5):
+        self.state = "rumble_h"
+        self.rumble(duration, force)
 
     def update(self):
         # Limit camera position to the defined area
@@ -48,13 +55,25 @@ class Camera:
         # Update camera position
         pyxel.camera(self.x, self.y)
 
-        # Rumble effect
-        if self.state == "rumble":
+        # Rumble vertical effect
+        if self.state == "rumble_v":
             if self.fx_duration > 0:
                 if self.fx_duration % 2 == 0:
                     pyxel.camera(self.x, self.y + self.rumble_force)
                 else:
                     pyxel.camera(self.x, self.y - self.rumble_force)
+                self.rumble_force -= self.rumble_reduction
+                self.fx_duration -= 1
+            else:
+                self.state = None
+
+        # Rumble horizontal effect
+        if self.state == "rumble_h":
+            if self.fx_duration > 0:
+                if self.fx_duration % 2 == 0:
+                    pyxel.camera(self.x + self.rumble_force, self.y)
+                else:
+                    pyxel.camera(self.x - self.rumble_force, self.y)
                 self.rumble_force -= self.rumble_reduction
                 self.fx_duration -= 1
             else:

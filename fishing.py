@@ -22,7 +22,9 @@ class Game:
         if pyxel.btn(pyxel.KEY_RIGHT):
             camera.move(1, 0)
         if pyxel.btnp(pyxel.KEY_Q):
-            camera.rumble(20, 5)
+            camera.rumble_v(20, 5)
+        if pyxel.btnp(pyxel.KEY_A):
+            camera.rumble_h(10, 15)
         for obj in self.objects.values(): obj.update()
         if pyxel.btn(pyxel.KEY_SPACE):
             camera.center_to_object(self.objects["BouncingBall"])
