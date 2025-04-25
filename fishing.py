@@ -1,18 +1,22 @@
 import pyxel
 from camera import camera
-from object import *
+from water import water
+from fish import Fish
+from particles import particles
 
 class Game:
     def __init__(self):
         pyxel.init(240, 160)
-        camera.init(120, 80)
-        pyxel.load("mygame.pyxres")
-        self.objects = {}
-        self.objects["BouncingBall"] = BouncingBall(50, 50, 10)
-        self.objects["GravityBall"] = GravityBall(100, 100, 10)
+        camera.init(0, 0)
+        pyxel.load("fishing.pyxres")
+        water.init(80, 480)
+        self.objects = []
+        self.objects.append(Fish(50, -20, 16, 8))
+        self.objects.append(Fish(100, -40, range=200, max_speed=2))
         pyxel.run(self.update, self.draw)
-
+#
     def update(self):
+        # Controls
         if pyxel.btn(pyxel.KEY_UP):
             camera.move(0, -1)
         if pyxel.btn(pyxel.KEY_DOWN):
@@ -25,19 +29,38 @@ class Game:
             camera.rumble_v(20, 5)
         if pyxel.btnp(pyxel.KEY_A):
             camera.rumble_h(10, 15)
-        for obj in self.objects.values(): obj.update()
-        if pyxel.btn(pyxel.KEY_SPACE):
-            camera.center_to_object(self.objects["BouncingBall"])
-        if pyxel.btn(pyxel.KEY_R):
-            camera.center_to_object(self.objects["GravityBall"])
+
+        if pyxel.btnp(pyxel.KEY_D):
+            self.objects[0].state = "deleted"
+        
+        # Update objects
+        for obj in self.objects:
+            obj.update()
+            if obj.state == "deleted":
+                self.objects.remove(obj)
+       
+        # Update particles
+        for particle in particles:
+            particle.update()
+            if particle.state == "deleted":
+                particles.remove(particle)
+
+
+        # Update camera position
         camera.update()
-        print(camera.get_position())
 
     def draw(self):
         pyxel.cls(0)
-        pyxel.bltm(0, 0, 0, 0, 0, 480, 320)
-        pyxel.circ(120, 80, 20, 7)
-        for obj in self.objects.values(): obj.draw()
 
+        # Draw background
+        pyxel.bltm(0, 0, 0, 0, 0, 480, 320)
+        water.draw()
+
+        # Draw objects
+        for obj in self.objects: obj.draw()
+
+        # Draw particles
+        for particle in particles:
+            particle.draw()
 
 Game()
